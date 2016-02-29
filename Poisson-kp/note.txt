@@ -1,0 +1,48 @@
+this subfolder consists of various routines, most importantly: the Poisson-Schrodinger solver
+
+the data-file
+-band data are stored as vband is negative
+
+unitary test:
+-test_abs
+-test_Vbare
+
+Chuang's gain compute
+-test_gain
+
+Momentum vs dipole, 2013Gu_PRB
+-test_dipole
+
+
+PS note:
+-fully coupled with kp
+-the simple mixing scheme, very hard to converge at high density
+-the broyden algrithm, fast convergence, note that we can adjust the fist appoximated inverse Jacobian "mesh.G".
+-f_charge_evp compute the "exact" charge, in contrast to discussion below eq.(36),2009Scheibenzuber_PRB
+
+
+discretization
+-mesh.xc lies at the middle of each element, effectively a "control" variable of that volume.
+-wavefunction and charge are defined nodally.
+-other material parameters are defined elementwise.
+-mesh.evb is defined elementwise, one reason is that we don't have a unique value of potential at heter-interface.
+-phi solved from the PS-eq are nodal variable, then phi_xc is elementwise, and returned by solve_PS_Broyden.
+-mesh.piechar = -[0 diff(mesh.Pol) 0]';because mesh.Pol is element-wise, while mesh.piechar(charge sheet) has to be nodal.
+
+
+
+1.do not use ovp-check unless necessary, needs very dense k grids to validate this procedure
+2.keep load_params and assem_kp consistent, e.g. mesh.gap-> bowing factor
+3.plot_convergence to confirm everything's fine, e.g. relative position of targets fermilevel, regularity of E(k)
+  if necessary, plot each subband to check SB1 SB2.
+
+Case In_{0.25}GaN
+  -for both single and MQW cases, use unrelax<=0.2 for esheet>=1e14
+  -for single well
+     -unrelax=0.5 upto esheet=5e13
+     -unrelax=0.2 upto esheet=1e14      
+  -for MQW, 
+     -unrelax also <=0.3.for esheet=2e13, 0.2 for 1e14, 0.1 for 1e14
+     -note the range for fminbnd is critical when sheet charge density is low, use larger range
+     -note the target for eigs is also critical when sheet charge density is low
+3.for MQW, number of eigen-values, Nwell*Ncb, Nwell*Nvb, when esheet>=1e14, Ncb>=12,Nvb>=16;

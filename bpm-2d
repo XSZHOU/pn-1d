@@ -125,6 +125,29 @@ for kz=PointsZ-1:-1:0;                      %main longitudinal loop -Z
     FieldMatrix(:,kz+1)=abs(field).^2; 
 end
 
+%interface matrix
+Ta=(-2*2/DY/DY+k^2*n1^2+k^2*n0^2+2*n0^2)*ones(PointsY,1);
+Tb=2/DY/DY*ones(PointsY,1);
+T11= spdiags([Tb Ta Tb],-1:1,PointsY,PointsY);
+Ta=(k^2*n1^2-k^2*n0^2)*ones(PointsY,1);
+T12= spdiags(Ta,0,PointsY,PointsY);
+Ta=(-2*2/DY/DY+2*k^2*n1^2+2*n0^2)*ones(PointsY,1);
+Tb=(2/DY/DY)*ones(PointsY,1);
+Ttemp=spdiags([Tb Ta Tb],-1:1,PointsY,PointsY);
+T11=T11\Ttemp;
+T12=T12\Ttemp;'
+
+Ta=(k^2*n1^2-k^2*n0^2)*ones(PointsY,1);
+Tb=2/DY/DY*ones(PointsY,1);
+B11= spdiags([Tb Ta Tb],-1:1,PointsY,PointsY);
+Ta=(-2*2/DY/DY+k^2*n1^2-k^2*n0^2)*ones(PointsY,1);
+B12= spdiags(Ta,0,PointsY,PointsY);
+B11=B11\Ttemp;
+B12=B12\Ttemp;
+
+fieldB_t= T11*fieldA_t+T12*fieldA_r;
+fieldB_r= B11*fieldA_t+B12*fieldA_r;
+
 figure(2)
 residue=abs(field)-field0;
 plot(Y,residue,'o-b')

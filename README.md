@@ -1,10 +1,8 @@
-# pn-1d
-I created this simple drift-diffusion code during my graduate study, 
-since such source code is extreamly unavailable on the internet,
-possibly because the TCAD market is heavily dominated by the few vendors.
+I created these simple matlab code during my graduate study, 
+open sourced here, since such source code is extreamly unavailable on the internet.
 
-The finite element method(FEM) and finite volume method(FVM) are employed in the implementation
+# pn-1d is a 1D hybrid FEM and finite volume method(FVM) drift-diffusion solver 
 
-# bpm-2d is a 2d BPM code
+# bpm-2d is a 2D BPM code for integrated photonics
 
-# possion-kp is a Poisson-Schrödinger solver
+# Possion-kp is a Poisson-Schrödinger solver for low-dimensional system
